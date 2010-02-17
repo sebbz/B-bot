@@ -42,7 +42,9 @@ class B(object):
     def placeSequence(self, player, cards):
         for p in self.players:
             if p.name == player:
-                p.placeSequence(cards)
+                if p.placeSequence(cards):
+                    return True
+        return False
         
     def showPlayersPlacedCards(self, player):
         for p in self.players:
@@ -102,7 +104,7 @@ class Player():
     def __init__(self, name):
         self.name = name
         self.held_cards = set()
-        self.placedCards = set()
+        self.placed_cards = set()
     
     def giveCards(self, cards):
         self.held_cards |= cards
@@ -111,7 +113,7 @@ class Player():
         return list(self.held_cards)
     
     def getPlacedCards(self):
-        return list(self.placedCards)
+        return list(self.placed_cards)
     
     def removeCard(self, card):
         if card in self.held_cards:
@@ -120,8 +122,33 @@ class Player():
         return False
     
     def placeSequence(self, cards):
-        self.placedCards |= cards
-        self.held_cards -= cards
+        matched = False
+        #IS THIS D?
+        if 14 in cards:
+            matched = self.__checkForSequence(cards)
+            if not matched:
+                cards.remove(14)
+                cards.append(1)
+                matched = self.__checkForSequence(cards)
+        else:
+            matched = self.__checkForSequence(cards)
+        if not matched:
+            return False
+        cards = set(cards)
+        if cards <= self.held_cards:
+            self.placed_cards |= cards
+            self.held_cards -= cards
+            return True
+        return False
+    
+    def __checkForSequence(self, cards):
+        cards.sort()
+        matched = True
+        for i in range(len(cards)):
+            if cards[0]+i != cards[i]:
+                matched = False
+        return matched
+
     
     def __str__(self):
         return self.name   
@@ -129,20 +156,21 @@ class Player():
 if __name__ == '__main__':
     #TEST CODE FOR TEST PURPOSES ONLY!! :D:D:D:
     
-    game = B()
+    game = B('hitler')
     game.addPlayer('hitler')
     game.addPlayer('adolfu')
     print game.getPlayers()
     game.shuffleDeck()
     game.dealCards()
     print 'hitler cards: ', game.getPlayerCards('hitler'), 'adolfu cards: ', game.getPlayerCards('adolfu')
-    print 'hitler draws one from deck'
-    game.drawFromDeck('hitler')
-    print 'hitler cards: ', game.getPlayerCards('hitler')
-    print 'hitler will now steal one card from adolfu:'
-    game.drawFromPlayer('hitler', 'adolfu')
+    #print 'hitler draws one from deck'
+    #game.drawFromDeck('hitler')
+    #print 'hitler cards: ', game.getPlayerCards('hitler')
+    #print 'hitler will now steal one card from adolfu:'
+    #game.drawFromPlayer('hitler', 'adolfu')
+    #print 'hitler cards: ', game.getPlayerCards('hitler'), 'adolfu cards: ', game.getPlayerCards('adolfu')
+    #print 'hitler will now put back one card into the deck'
+    #game.putPlayerCardBackInDeck('hitler', 5)
     print 'hitler cards: ', game.getPlayerCards('hitler'), 'adolfu cards: ', game.getPlayerCards('adolfu')
-    print 'hitler will now put back one card into the deck'
-    game.putPlayerCardBackInDeck('hitler', 5)
-    print 'hitler cards: ', game.getPlayerCards('hitler'), 'adolfu cards: ', game.getPlayerCards('adolfu')
-    print 'deck: ', game.deck
+    print 'hitler will place some cards'
+    print game.placeSequence('hitler', game.getPlayerCards('hitler'))
