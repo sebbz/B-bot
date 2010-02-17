@@ -2,6 +2,8 @@
 @author: WICKEDNETS OF DOAAAAAM
 '''
 
+import random
+
 class B(object):
     """
     HAPPY B CLASS FOR EXTREME GAMING SENSATION!!!!
@@ -9,48 +11,75 @@ class B(object):
 
     def __init__(self):
         self.players = []
-        self.deck = range(2,14)
+        self.deck = range(2,15)
     
     def addPlayer(self, player_name):
         self.players.append(Player(player_name))
         
     def getPlayers(self):
-        players = []
+        str_players = []
         for player in self.players:
-            players.append(str(player))
-        return 
+            str_players.append(str(player))
+        return str_players
         
     def startGame(self):
         pass
     
     def placeSequence(self, player, cards):
-        self.players.index(player).placeSequence(cards)
+        for p in self.players:
+            if p.name == player:
+                p.placeSequence(cards)
         
     def showPlayersPlacedCards(self, player):
-        return self.players.index(player).getPlacedCards()
+        for p in self.players:
+            if p.name == player:
+                return p.getPlacedCards()
+        return None
     
     def drawFromDeck(self, player):
         if len(self.deck) > 0:
-            self.players.index(player).giveCards(self.deck.pop())
+            for p in self.players:
+                if p.name == player:
+                    p.giveCards(set([self.deck.pop()]))
             return True
         else:
             return False
     
-    def putCardBackInDeck(self, card):
+    def putPlayerCardBackInDeck(self, player, card):
+        for p in self.players:
+            if p.name == player:
+                p.removeCard(card)
         self.deck.append(card)
     
     def drawFromPlayer(self, nasty_player, victim_player):
-        victim_cards = self.players.index(victim_player).getHeldCards()
-        stolen_card = victim_cards.shuffle().pop()
-        self.players.index(victim_player).removeCard(stolen_card)
-        self.players.index(nasty_player).giveCards([stolen_card])
+        for p in self.players:
+            if p.name == nasty_player:
+                np = p
+            if p.name == victim_player:
+                vp = p
+        victim_cards = vp.getHeldCards()
+        stolen_card = random.choice(victim_cards)
+        vp.removeCard(stolen_card)
+        np.giveCards(set([stolen_card]))
+        return stolen_card
     
     def shuffleDeck(self):
-        self.deck.shuffle()
+        temp_deck = []
+        while self.deck:
+            card = random.choice(self.deck)
+            self.deck.remove(card)
+            temp_deck.append(card)
+        self.deck = temp_deck
     
     def dealCards(self):
         for player in self.players:
-            player.giveCards([self.deck.pop(), self.deck.pop()])
+            player.giveCards(set([self.deck.pop(), self.deck.pop()]))
+            
+    def getPlayerCards(self, player):
+        for p in self.players:
+            if p.name == player:
+                return p.getHeldCards()
+        return None
     
 class Player():
     """
@@ -82,4 +111,24 @@ class Player():
     
     def __str__(self):
         return self.name   
+
+if __name__ == '__main__':
+    #TEST CODE FOR TEST PURPOSES ONLY!! :D:D:D:
     
+    game = B()
+    game.addPlayer('hitler')
+    game.addPlayer('adolfu')
+    print game.getPlayers()
+    game.shuffleDeck()
+    game.dealCards()
+    print 'hitler cards: ', game.getPlayerCards('hitler'), 'adolfu cards: ', game.getPlayerCards('adolfu')
+    print 'hitler draws one from deck'
+    game.drawFromDeck('hitler')
+    print 'hitler cards: ', game.getPlayerCards('hitler')
+    print 'hitler will now steal one card from adolfu:'
+    game.drawFromPlayer('hitler', 'adolfu')
+    print 'hitler cards: ', game.getPlayerCards('hitler'), 'adolfu cards: ', game.getPlayerCards('adolfu')
+    print 'hitler will now put back one card into the deck'
+    game.putPlayerCardBackInDeck('hitler', 5)
+    print 'hitler cards: ', game.getPlayerCards('hitler'), 'adolfu cards: ', game.getPlayerCards('adolfu')
+    print 'deck: ', game.deck
