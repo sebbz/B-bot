@@ -14,20 +14,36 @@ class B(object):
     def addPlayer(self, player_name):
         self.players.append(Player(player_name))
         
+    def getPlayers(self):
+        players = []
+        for player in self.players:
+            players.append(str(player))
+        return 
+        
     def startGame(self):
         pass
     
     def placeSequence(self, player, cards):
-        pass 
+        self.players.index(player).placeSequence(cards)
         
-    def showPlayersTableCards(self, player):
-        pass
+    def showPlayersPlacedCards(self, player):
+        return self.players.index(player).getPlacedCards()
     
     def drawFromDeck(self, player):
-        player.giveCards(self.deck.pop())
+        if len(self.deck) > 0:
+            self.players.index(player).giveCards(self.deck.pop())
+            return True
+        else:
+            return False
+    
+    def putCardBackInDeck(self, card):
+        self.deck.append(card)
     
     def drawFromPlayer(self, nasty_player, victim_player):
-        pass
+        victim_cards = self.players.index(victim_player).getHeldCards()
+        stolen_card = victim_cards.shuffle().pop()
+        self.players.index(victim_player).removeCard(stolen_card)
+        self.players.index(nasty_player).giveCards([stolen_card])
     
     def shuffleDeck(self):
         self.deck.shuffle()
@@ -48,8 +64,11 @@ class Player():
     def giveCards(self, cards):
         self.held_cards |= cards
     
-    def heldCards(self):
-        return self.held_cards
+    def getHeldCards(self):
+        return list(self.held_cards)
+    
+    def getPlacedCards(self):
+        return list(self.placedCards)
     
     def removeCard(self, card):
         if card in self.held_cards:
@@ -60,5 +79,7 @@ class Player():
     def placeSequence(self, cards):
         self.placedCards |= cards
         self.held_cards -= cards
-        
-        
+    
+    def __str__(self):
+        return self.name   
+    
