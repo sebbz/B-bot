@@ -14,7 +14,6 @@ class B(object):
         self.deck = range(2,15)
     
     def addPlayer(self, player_name):
-        #fler än 4 och inte samma
         if len(self.players > 3):
             return False
         for p in self.players:
