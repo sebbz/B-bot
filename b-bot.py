@@ -4,8 +4,14 @@ import socket
 import string
 import signal
 
-def signal_handler(signal, frame)
+def signal_handler(signal, frame):
+    global s
+    print "lol"
+    s.close()
+    sys.exit()
 
+
+signal.signal(signal.SIGINT, signal_handler)
 HOST="irc.se.quakenet.org"
 PORT=6667
 NICK="stolpen_kok"
@@ -15,7 +21,6 @@ OWNER="grul"
 CHANNELINIT="#it05 apknull"
 readbuffer=""
 
-u = raw_input("lol")
 s=socket.socket()
 print "fätta"
 s.connect((HOST, PORT))
