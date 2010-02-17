@@ -3,6 +3,7 @@ import sys
 import socket
 import string
 import signal
+import time
 
 #import b
 
@@ -21,7 +22,7 @@ buffer = ""
 
 HOST="irc.se.quakenet.org"
 PORT=6667
-NICK="stolpen_kok"
+NICK="klevert_brule"
 IDENT="b-boten"
 REALNAME="b botson"
 OWNER="grul"
@@ -36,6 +37,7 @@ print "Sending USER..."
 s.send("USER %s %s %s :%s\r\n" % (IDENT, IDENT, IDENT, REALNAME))
 
 joined = False
+failedjoin = False
 
 #game = b.B()
 print "Main loop..."
@@ -45,6 +47,10 @@ while True:
     buffer = lines.pop()
     for line in lines:
         print line
+	
+	if str.find(line, "Register first") > 0:
+		joined = False
+
         if line.find("PING") != -1:
             s.send("PONG %s\r\n" % line.split()[1])
             if not joined:
