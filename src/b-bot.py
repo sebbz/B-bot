@@ -47,9 +47,9 @@ while True:
     buffer = lines.pop()
     for line in lines:
         print line
-	
-	if str.find(line, "Register first") > 0:
-		joined = False
+
+    if str.find(line, "Register first") > 0:
+        joined = False
 
         if line.find("PING") != -1:
             pings += 1
