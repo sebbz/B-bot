@@ -18,13 +18,15 @@ class Stats(object):
         #Ökar vinstsaldot för ett nick med 1
         self.database.addWin(nick)
     
-    def printTopTen(self):
-        #Skriver ut topp tio-lista på skärmen
+    def getTopTen(self):
+        #Returnerar topp tio-lista
         topTen = self.database.getTopTen()
-        print "Nick\t\t\tWins"
+        topList = "Nick\t\t\tWins"
 
         for player in topTen:
-            print player[0] + "\t\t\t" + str(player[1])
+            topList += "\n" + player[0] + "\t\t\t" + str(player[1])
+
+        return topList
 
 class Database():
     """
@@ -79,5 +81,5 @@ stats = Stats()
 stats.addWin('sebbz')
 stats.addWin('grul')
 stats.addWin('igno')
-stats.printTopTen()
+print stats.getTopTen()
 """
