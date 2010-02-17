@@ -12,14 +12,18 @@ class Stats(object):
     """
     def __init__(self):
         self.database = Database("stats.db")
-        #self.database.createTables()
+
+    def recreateDatabase(self):
+        self.database.createTables()
 
     def addWin(self,nick):
         #Ökar vinstsaldot för ett nick med 1
         self.database.addWin(nick)
+        print "Stats: ny vinst registrerad för " + nick
     
     def getTopTen(self):
         #Returnerar topp tio-lista
+        print "Stats: hämtar topp tio-lista"
         topTen = self.database.getTopTen()
         topList = "Nick\t\t\tWins"
 
@@ -41,8 +45,13 @@ class Database():
     def createTables(self):
         #Skapar statistiktabell(er)
         c = self.conn.cursor()
-        c.execute('''CREATE TABLE stats (nick text, wins int)''')
-        self.conn.commit()
+
+        try:
+            c.execute('''CREATE TABLE stats (nick text, wins int)''')
+            self.conn.commit()
+        except sqlite3.OperationalError as e:
+            print str(e)
+
         c.close()
 
     def addWin(self,nick):
@@ -60,6 +69,8 @@ class Database():
             c.execute('UPDATE stats SET wins = wins + 1 WHERE nick = ?',t)
         elif numrows == 0:
             c.execute('INSERT INTO stats VALUES (?,1)',t)
+        else:
+            print "!!! Fel i databasen: samma nick förekommer flera gånger i stats-tabellen"
 
         self.conn.commit()
 
@@ -76,10 +87,11 @@ class Database():
 
 
 #Test code
-"""
+""
+stats = Stats()
 stats = Stats()
 stats.addWin('sebbz')
 stats.addWin('grul')
 stats.addWin('igno')
 print stats.getTopTen()
-"""
+""
