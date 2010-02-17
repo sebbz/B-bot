@@ -18,7 +18,7 @@ class GameMaster:
         if msg == "help":
             pass
         if msg == "draw":
-            pass
+            return self.draw(nick)
         if msg == "join":
             return self.join(nick)
         return "Fuck OFF %s!!!!!!!" % nick.upper()
@@ -32,16 +32,17 @@ class GameMaster:
         return "A new game has been created by %s. Type b.join to join in" % nick
 
     def join(self, nick):
-        str = "Couldn't add %s. Players: %s " % (nick, " ".join(self.b.getPlayers()))
-        if (not self.playing) and self.b.addPlayer(nick):
-            str = "%s joined! Players: " % nick
-            str += " ".join(self.b.getPlayers())
+        str = "Couldn't add %s. Invalid game!" % nick
+        if (self.has_game and not self.playing):
+            if self.b.addPlayer(nick):
+                str = "%s joined! Players: " % nick
+                str += " ".join(self.b.getPlayers())
         return str
 
     def startGame(self, nick):
         if not self.has_game:
             return "No game to start"
-        if not self.playing:
+        if self.playing:
             return "Game has already started"
         if self.b.getStartPlayer() != nick:
             return "Only %s can start the game" % self.b.getStartPlayer()
@@ -53,10 +54,24 @@ class GameMaster:
         self.bbot.sendChanMsg("Dealing cards")
         self.b.dealCards()
         for player in self.b.getPlayers():
-            text = "Your cards: "
-            for card in self.b.getPlayerCards(player):
-                text += str(card)
-                text += " "
-            self.bbot.sendPrivMsg(player, text)
+            self.__sendPlayersCards(player)
         self.current_player = self.b.getRandomPlayer()
         return "Game started! %s's turn" % self.current_player
+    
+    def draw(self, nick):
+        if not self.playing:
+            return "No game started, CANNOT dRAW YOU DUMBFUCK %s" % nick
+        if self.current_player == nick:
+            if self.b.drawFromDeck(nick):
+                self.__sendPlayersCards(nick)
+                return "%s drew a card, turn around." % nick
+            return "ERON"
+        else:
+            return "IT IS NOT YOUR TURN %s STOOPOD!?" % nick
+            
+    def __sendPlayersCards(self, nick):
+        text = "Your cards: "
+        for card in self.b.getPlayerCards(nick):
+            text += str(card)
+            text += " "
+        self.bbot.sendPrivMsg(nick, text)

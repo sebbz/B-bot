@@ -7,6 +7,7 @@ import random
 class B(object):
     """
     HAPPY B CLASS FOR EXTREME GAMING SENSATION!!!!
+    TROVALDS (todo that is) = = make some kind of turn system goin around and around and around and around
     """
 
     def __init__(self, start_player):
