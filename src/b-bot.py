@@ -3,7 +3,6 @@ import sys
 import socket
 import string
 import signal
-import time
 
 import b
 
