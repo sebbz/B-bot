@@ -97,6 +97,9 @@ class B(object):
                 return p.getHeldCards()
         return None
     
+    def getRandomPlayer(self):
+        return str(random.choice(self.players))
+    
 class Player():
     """
     This is a player. He likes women with small feet though all other women seem to take much interest in him. The player usually plays along and entertain the women, thence a player.
