@@ -1,12 +1,11 @@
 # coding=utf-8
 import sys
 import socket
-import string
 import signal
 
-import b
+import gamemaster
 
-def signal_handler(signal, frame):
+def terminate():
     global s
     print """
 ############
@@ -15,13 +14,16 @@ TERMINATING
     s.close()
     sys.exit()
 
+def signal_handler(signal, frame):
+    terminate()
+
 signal.signal(signal.SIGINT, signal_handler)
 
 buffer = ""
 
 HOST="irc.se.quakenet.org"
 PORT=6667
-NICK="klevert_brule"
+NICK="TALKSHOWHOST"
 IDENT="b-boten"
 REALNAME="b botson"
 OWNER="grul"
@@ -35,10 +37,9 @@ s.send("NICK %s\r\n" % NICK)
 print "Sending USER..."
 s.send("USER %s %s %s :%s\r\n" % (IDENT, IDENT, IDENT, REALNAME))
 
-joined = False
 pings = 0
 
-game = b.B()
+gm = gamemaster.GameMaster()
 
 print "Main loop..."
 while True:
@@ -47,10 +48,6 @@ while True:
     buffer = lines.pop()
     for line in lines:
         print line
-
-    if str.find(line, "Register first") > 0:
-        joined = False
-
         if line.find("PING") != -1:
             pings += 1
             s.send("PONG %s\r\n" % line.split()[1])
@@ -59,9 +56,12 @@ while True:
         if line.find("PRIVMSG") != -1:
             print line
             nick = line.split()[0].split(":")[1].split("!")[0]
-            print nick
+            print "nick: %s" % nick
             message = line.split(" ", 3)[3][1:]
             print "message: %s" % message
 
-s.close()
+            if message.startswith("b."):
+                l = gm.handlemessage(message[2:])
+                if l != "":
+                    s.send("PRIVMSG %s :%s\r\n" % (CHANNEL, l))
 
