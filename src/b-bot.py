@@ -57,7 +57,7 @@ while True:
             message = line.split(" ", 3)[3][1:]
             print "message: %s" % message
 
-"""NO REASON
+"""NO REASON AT ALL
 """
 s.close()
 
