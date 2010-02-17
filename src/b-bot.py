@@ -5,7 +5,7 @@ import string
 import signal
 import time
 
-#import b
+import b
 
 def signal_handler(signal, frame):
     global s
@@ -22,7 +22,11 @@ buffer = ""
 
 HOST="irc.se.quakenet.org"
 PORT=6667
+<<<<<<< HEAD:src/b-bot.py
 NICK="klevert_brule"
+=======
+NICK="TALKSHOWHOST"
+>>>>>>> 2565ebb3bf068552764ea7798d7a08c330703d4c:src/b-bot.py
 IDENT="b-boten"
 REALNAME="b botson"
 OWNER="grul"
@@ -37,9 +41,10 @@ print "Sending USER..."
 s.send("USER %s %s %s :%s\r\n" % (IDENT, IDENT, IDENT, REALNAME))
 
 joined = False
-failedjoin = False
+pings = 0
 
-#game = b.B()
+game = b.B()
+
 print "Main loop..."
 while True:
     buffer += s.recv(2048)
@@ -52,10 +57,12 @@ while True:
 		joined = False
 
         if line.find("PING") != -1:
+            pings += 1
             s.send("PONG %s\r\n" % line.split()[1])
-            if not joined:
+            if pings == 2:
                 s.send("JOIN %s\r\n" % CHANNEL)
-                joined = True
+        if line.find("PRIVMSG") != -1:
+            print line
 
 s.close()
 
