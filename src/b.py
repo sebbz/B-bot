@@ -9,9 +9,10 @@ class B(object):
     HAPPY B CLASS FOR EXTREME GAMING SENSATION!!!!
     """
 
-    def __init__(self):
+    def __init__(self, start_player):
         self.players = []
         self.deck = range(2,15)
+        self.start_player = start_player
     
     def addPlayer(self, player_name):
         if len(self.players) > 3:
@@ -28,8 +29,15 @@ class B(object):
             players.append(str(p))
         return players
         
-    def startGame(self):
-        pass
+    def getStartPlayer(self):
+        return self.start_player
+    
+    def startGame(self, player):
+        """ IS THIS EVEN SUPPOSED TO BE HERE!?! haha I'll leave it! :D
+        """
+        if self.start_player is not player:
+            return False
+        return True
     
     def placeSequence(self, player, cards):
         for p in self.players:
