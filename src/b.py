@@ -14,7 +14,7 @@ class B(object):
         self.deck = range(2,15)
     
     def addPlayer(self, player_name):
-        if len(self.players > 3):
+        if len(self.players) > 3:
             return False
         for p in self.players:
             if p.name == player_name:
