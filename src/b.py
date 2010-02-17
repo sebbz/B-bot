@@ -14,13 +14,20 @@ class B(object):
         self.deck = range(2,15)
     
     def addPlayer(self, player_name):
+        #fler än 4 och inte samma
+        if len(self.players > 3):
+            return False
+        for p in self.players:
+            if p.name == player_name:
+                return False
         self.players.append(Player(player_name))
+        return True
         
     def getPlayers(self):
-        str_players = []
-        for player in self.players:
-            str_players.append(str(player))
-        return str_players
+        players = []
+        for p in self.players:
+            players.append(str(p))
+        return players
         
     def startGame(self):
         pass
