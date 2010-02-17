@@ -103,12 +103,11 @@ class Database():
 
 
 #Test code
-""
+"""
 stats = Stats()
 stats.addWin('sebbz')
 stats.addWin('grul')
 stats.addWin('igno')
+print "Vinster för sebbz: " + stats.getWins('sebbz')
 print stats.getTopTen()
-""
-stats = Stats()
-print "Vinster: " + stats.getWins('iadkogno')
+"""
