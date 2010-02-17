@@ -22,11 +22,7 @@ buffer = ""
 
 HOST="irc.se.quakenet.org"
 PORT=6667
-<<<<<<< HEAD:src/b-bot.py
 NICK="klevert_brule"
-=======
-NICK="TALKSHOWHOST"
->>>>>>> 2565ebb3bf068552764ea7798d7a08c330703d4c:src/b-bot.py
 IDENT="b-boten"
 REALNAME="b botson"
 OWNER="grul"
