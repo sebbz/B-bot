@@ -3,9 +3,9 @@ import sys
 import socket
 import signal
 
-import b
+import gamemaster
 
-def signal_handler(signal, frame):
+def terminate():
     global s
     print """
 ############
@@ -13,6 +13,9 @@ TERMINATING
 ############"""
     s.close()
     sys.exit()
+
+def signal_handler(signal, frame):
+    terminate()
 
 signal.signal(signal.SIGINT, signal_handler)
 
@@ -36,7 +39,7 @@ s.send("USER %s %s %s :%s\r\n" % (IDENT, IDENT, IDENT, REALNAME))
 
 pings = 0
 
-game = b.B()
+gm = gamemaster.GameMaster()
 
 print "Main loop..."
 while True:
@@ -57,7 +60,8 @@ while True:
             message = line.split(" ", 3)[3][1:]
             print "message: %s" % message
 
-"""NO REASON AT ALL
-"""
-s.close()
+            if message.startswith("b."):
+                l = gm.handlemessage(message[2:])
+                if l != "":
+                    s.send("PRIVMSG %s :%s\r\n" % (CHANNEL, l))
 
