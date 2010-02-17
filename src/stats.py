@@ -101,13 +101,12 @@ class Database():
 
         return wins
 
-
-#Test code
-"""
-stats = Stats()
-stats.addWin('sebbz')
-stats.addWin('grul')
-stats.addWin('igno')
-print "Vinster för sebbz: " + stats.getWins('sebbz')
-print stats.getTopTen()
-"""
+if __name__ == '__main__':
+    #Test code
+    stats = Stats()
+    stats.addWin('sebbz')
+    stats.addWin('grul')
+    stats.addWin('igno')
+    print "Vinster för sebbz: " + stats.getWins('sebbz')
+    print ""
+    print stats.getTopTen()
