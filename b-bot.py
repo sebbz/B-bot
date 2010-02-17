@@ -4,6 +4,8 @@ import socket
 import string
 import signal
 
+import b
+
 def signal_handler(signal, frame):
     global s
     print "lol"
@@ -22,20 +24,15 @@ CHANNELINIT="#it05 apknull"
 readbuffer=""
 
 s=socket.socket()
-print "fätta"
 s.connect((HOST, PORT))
-print "SÄLAS"
 s.send("NICK "+NICK+"\r\n")
-print "säldahf"
 s.send("USER "+IDENT+" "+HOST+" :"+REALNAME+"\r\n")
 
 done = False
 while not done:
     line = s.recv(500)
     print line
-    a = raw_input("FITTA\n")
-    if a == "quit":
-        done = True
+
 
 s.close()
 
