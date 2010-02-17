@@ -52,6 +52,10 @@ while True:
                 s.send("JOIN %s\r\n" % CHANNEL)
         if line.find("PRIVMSG") != -1:
             print line
+            nick = line.split()[0].split(":")[1].split("!")[0]
+            print nick
+            message = line.split(" ", 3)[3][1:]
+            print "message: %s" % message
 
 s.close()
 
