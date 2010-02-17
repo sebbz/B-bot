@@ -32,6 +32,9 @@ class Stats(object):
 
         return topList
 
+    def getWins(self, nick):
+        return self.database.getWins(nick)
+
 class Database():
     """
     Interface mot (t.ex.) SQLite-database
@@ -85,13 +88,27 @@ class Database():
 
         return topTen
 
+    def getWins(self, nick):
+        #Hämtar antal vinster på ett nick
+        c = self.conn.cursor()
+        t = (nick,)
+        wins = "0"
+
+        c.execute('SELECT * FROM stats WHERE nick=?',t)
+    
+        for row in c:
+            wins = str(row[1])
+
+        return wins
+
 
 #Test code
 ""
-stats = Stats()
 stats = Stats()
 stats.addWin('sebbz')
 stats.addWin('grul')
 stats.addWin('igno')
 print stats.getTopTen()
 ""
+stats = Stats()
+print "Vinster: " + stats.getWins('iadkogno')
