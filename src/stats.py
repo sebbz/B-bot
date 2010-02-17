@@ -69,6 +69,8 @@ class Database():
             c.execute('UPDATE stats SET wins = wins + 1 WHERE nick = ?',t)
         elif numrows == 0:
             c.execute('INSERT INTO stats VALUES (?,1)',t)
+        else:
+            print "!!! Fel i databasen: samma nick förekommer flera gånger i stats-tabellen"
 
         self.conn.commit()
 
