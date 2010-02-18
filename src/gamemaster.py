@@ -21,6 +21,8 @@ class GameMaster:
             return self.draw(nick)
         if msg == "join":
             return self.join(nick)
+        if msg == "done":
+            return self.done(nick)
         return "Fuck OFF %s!!!!!!!" % nick.upper()
 
     def newGame(self, nick):
@@ -64,11 +66,19 @@ class GameMaster:
         if self.current_player == nick:
             if self.b.drawFromDeck(nick):
                 self.__sendPlayersCards(nick)
-                self.current_player = self.b.getNextPlayer() # TESTING PURPOSES MAN SKA GÖRA ANDRA SKAER LOL
-                return "%s drew a card, %s's turn" % (nick, self.current_player)
+                return "%s drew a card, do something else or b.done" % (nick)
             return "ERON"
         else:
             return "IT IS NOT YOUR TURN %s STOOPOD!?" % nick
+    
+    def done(self, nick):
+        if not self.playing:
+            return "No game started, CANNOT LOL YOU DUMBFUCK %s" % nick
+        if self.current_player == nick:
+            self.current_player = self.b.getNextPlayer()
+            return "%s done, %s's turn" % (nick, self.current_player)
+        else:
+            return "not %s turn"  % nick
 
     def __sendPlayersCards(self, nick):
         text = "Your cards: "
