@@ -12,6 +12,7 @@ class Stats(object):
     """
     def __init__(self):
         self.database = Database("stats.db")
+        self.database.createTables()
 
     def recreateDatabase(self):
         self.database.createTables()
@@ -50,7 +51,7 @@ class Database():
         c = self.conn.cursor()
 
         try:
-            c.execute('''CREATE TABLE stats (nick text, wins int)''')
+            c.execute('''CREATE TABLE IF NOT EXISTS stats (nick text, wins int)''')
             self.conn.commit()
         except sqlite3.OperationalError as e:
             print str(e)
