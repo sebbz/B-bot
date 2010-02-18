@@ -57,7 +57,7 @@ class BBot:
 
                     if message.startswith("b."):
                         l = self.gm.handleMessage(nick, message[2:])
-                        if l != "":
+                        if l != "" and l != None:
                             self.s.send("PRIVMSG %s :%s\r\n" % (self.CHANNEL, l))
     def sendPrivMsg(self, nick, msg):
         self.s.send("PRIVMSG %s :%s\r\n" % (nick, msg))

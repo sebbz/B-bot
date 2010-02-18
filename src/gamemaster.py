@@ -10,6 +10,8 @@ class GameMaster:
         self.bbot = bbot
         self.current_player = ""
         self.drawn = False
+        self. drawCounter = 0
+
     def handleMessage(self, nick, msg):
         msg = msg.strip()
         if msg == "new game":
@@ -28,6 +30,12 @@ class GameMaster:
             return self.getPlayers()
         if msg.startswith("drop"):
             return self.dropCard(nick, msg)
+        if msg.startswith("cards"):
+            if self.playing:
+                self.__sendPlayersCards(nick)
+                return None
+            else:
+                return "%s, not playing" % nick
         return "Fuck OFF %s!!!!!!!" % nick.upper()
 
     def newGame(self, nick):
@@ -71,10 +79,18 @@ class GameMaster:
         if not self.playing:
             return "No game started, CANNOT dRAW YOU DUMBFUCK %s" % nick
         if self.current_player == nick:
-            if self.b.drawFromDeck(nick):
-                self.__sendPlayersCards(nick)
-                return "%s drew a card, do something else or b.done" % (nick)
-            return "ERON"
+            #Man får bara ta ett kort om:
+            #två kort på handen, i början av rundan
+            #eller
+            #under två kort på handen, resten av rundan
+            if self.drawCounter == 0 and len(self.b.getPlayerCards(nick)) == 2 or self.drawCounter >0 and len(self.b.getPlayerCards(nick)) < 2:
+                if self.b.drawFromDeck(nick):
+                    self.__sendPlayersCards(nick)
+                    self.drawCounter += 1
+                    return "%s drew a card, do something else or b.done" % (nick)
+                return "ERON"
+            else:
+                return "%s, draw not ALLAWOD" % nick
         else:
             return "IT IS NOT YOUR TURN %s STOOPOD!?" % nick
 
@@ -103,6 +119,7 @@ class GameMaster:
             return "No game started, CANNOT LOL YOU DUMBFUCK %s" % nick
         if self.current_player == nick:
             self.current_player = self.b.getNextPlayer()
+            self.drawCounter = 0
             return "%s done, %s's turn" % (nick, self.current_player)
         else:
             return "not %s turn"  % nick
