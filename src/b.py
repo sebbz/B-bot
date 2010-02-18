@@ -15,7 +15,7 @@ class B(object):
         self.deck = range(2,15)
         self.start_player = start_player
         self.current_player_index = 0
-    
+
     def addPlayer(self, player_name):
         if len(self.players) > 3:
             return False
@@ -24,36 +24,36 @@ class B(object):
                 return False
         self.players.append(Player(player_name))
         return True
-        
+
     def getPlayers(self):
         players = []
         for p in self.players:
             players.append(str(p))
         return players
-        
+
     def getStartPlayer(self):
         return self.start_player
-    
+
     def startGame(self, player):
         """ IS THIS EVEN SUPPOSED TO BE HERE!?! haha I'll leave it! :D
         """
         if self.start_player is not player:
             return False
         return True
-    
+
     def placeSequence(self, player, cards):
         for p in self.players:
             if p.name == player:
                 if p.placeSequence(cards):
                     return True
         return False
-        
+
     def showPlayersPlacedCards(self, player):
         for p in self.players:
             if p.name == player:
                 return p.getPlacedCards()
         return None
-    
+
     def drawFromDeck(self, player):
         if len(self.deck) > 0:
             for p in self.players:
@@ -62,13 +62,13 @@ class B(object):
             return True
         else:
             return False
-    
+
     def putPlayerCardBackInDeck(self, player, card):
         for p in self.players:
             if p.name == player:
                 p.removeCard(card)
         self.deck.append(card)
-    
+
     def drawFromPlayer(self, nasty_player, victim_player):
         for p in self.players:
             if p.name == nasty_player:
@@ -80,26 +80,22 @@ class B(object):
         vp.removeCard(stolen_card)
         np.giveCards(set([stolen_card]))
         return stolen_card
-    
+
     def shuffleDeck(self):
-        temp_deck = []
-        while self.deck:
-            card = random.choice(self.deck)
-            self.deck.remove(card)
-            temp_deck.append(card)
-        self.deck = temp_deck
-    
+        random.shuffle(self.deck)
+
     def dealCards(self):
         for player in self.players:
             player.giveCards(set([self.deck.pop(), self.deck.pop()]))
-            
+
     def getPlayerCards(self, player):
         for p in self.players:
             if p.name == player:
                 return p.getHeldCards()
         return None
-    
+
     def getRandomPlayer(self):
+        random.shuffle(self.players) # SHUFFLE THE ORDER OF THI PLAYERS
         self.current_player_index = random.randrange(len(self.players))
         return str(self.players[self.current_player_index])
 
@@ -108,7 +104,7 @@ class B(object):
         if self.current_player_index >= len(self.players):
             self.current_player_index = 0
         return str(self.players[self.current_player_index])
-    
+
 class Player():
     """
     This is a player. He likes women with small feet though all other women seem to take much interest in him. The player usually plays along and entertain the women, thence a player.
@@ -117,22 +113,22 @@ class Player():
         self.name = name
         self.held_cards = set()
         self.placed_cards = set()
-    
+
     def giveCards(self, cards):
         self.held_cards |= cards
-    
+
     def getHeldCards(self):
         return list(self.held_cards)
-    
+
     def getPlacedCards(self):
         return list(self.placed_cards)
-    
+
     def removeCard(self, card):
         if card in self.held_cards:
             self.held_cards.remove(card)
             return True
         return False
-    
+
     def placeSequence(self, cards):
         matched = False
         #IS THIS D?
@@ -152,7 +148,7 @@ class Player():
             self.held_cards -= cards
             return True
         return False
-    
+
     def __checkForSequence(self, cards):
         cards.sort()
         matched = True
@@ -161,13 +157,13 @@ class Player():
                 matched = False
         return matched
 
-    
+
     def __str__(self):
-        return self.name   
+        return self.name
 
 if __name__ == '__main__':
     #TEST CODE FOR TEST PURPOSES ONLY!! :D:D:D:
-    
+
     game = B('hitler')
     game.addPlayer('hitler')
     game.addPlayer('adolfu')

@@ -9,6 +9,7 @@ class GameMaster:
         self.has_game = False
         self.bbot = bbot
         self.current_player = ""
+        self.drawn = False
     def handleMessage(self, nick, msg):
         msg = msg.strip()
         if msg == "new game":
@@ -16,13 +17,17 @@ class GameMaster:
         if msg == "start game":
             return self.startGame(nick)
         if msg == "help":
-            pass
+            return "commands: b.new game, b.join, b.start game, b.draw, b.drop, b.done" # TODO MEEEER! förklaringar kanske
         if msg == "draw":
             return self.draw(nick)
         if msg == "join":
             return self.join(nick)
         if msg == "done":
             return self.done(nick)
+        if msg == "players":
+            return self.getPlayers()
+        if msg.startswith("drop"):
+            return self.dropCard(nick, msg)
         return "Fuck OFF %s!!!!!!!" % nick.upper()
 
     def newGame(self, nick):
@@ -34,7 +39,9 @@ class GameMaster:
         return "A new game has been created by %s. Type b.join to join in" % nick
 
     def join(self, nick):
-        str = "Couldn't add %s. Invalid game!" % nick
+        str = "Couldn't add %s. Maybe the game is full or has already started!" % nick
+        if self.has_game:
+            str += " Players: %s" % ", ".join(self.b.getPlayers())
         if (self.has_game and not self.playing):
             if self.b.addPlayer(nick):
                 str = "%s joined! Players: " % nick
@@ -60,7 +67,7 @@ class GameMaster:
         self.current_player = self.b.getRandomPlayer()
         return "Game started! %s's turn" % self.current_player
 
-    def draw(self, nick):
+    def draw(self, nick): #TODO self.drawn = True och säkert mer saker
         if not self.playing:
             return "No game started, CANNOT dRAW YOU DUMBFUCK %s" % nick
         if self.current_player == nick:
@@ -70,8 +77,28 @@ class GameMaster:
             return "ERON"
         else:
             return "IT IS NOT YOUR TURN %s STOOPOD!?" % nick
-    
-    def done(self, nick):
+
+    def dropCard(self, nick, msg): #TODO massor :-D
+        error_msg = "Failure! Example b.drop B"
+        if len(msg) != 6:
+            self.bbot.sendPrivMsg(nick, error_msg)
+            return ""
+        else:
+            card = 0
+            try:
+                card = int(msg[5].lower().replace("b", "11").replace("q", "12").replace("k", "13").replace("a", "14"))
+            except ValueError:
+                self.bbot.sendPrivMsg(nick, error_msg)
+                return ""
+            cards = self.b.getPlayerCards(nick)
+            if len(cards) < 3:
+                self.bbot.sendPrivMsg(nick, "You don't have enough cards")
+                return ""
+            if not card in cards:
+                self.bbot.sendPrivMsg(nick, "You don't have that card")
+                return ""
+
+    def done(self, nick): #TODO if self.drawn nånting och kort i leken
         if not self.playing:
             return "No game started, CANNOT LOL YOU DUMBFUCK %s" % nick
         if self.current_player == nick:
@@ -79,6 +106,12 @@ class GameMaster:
             return "%s done, %s's turn" % (nick, self.current_player)
         else:
             return "not %s turn"  % nick
+
+    def getPlayers(self):
+        if self.has_game:
+            return "Players: %s" % ", ".join(self.b.getPlayers())
+        else:
+            return "There isn't even a game, fool!"
 
     def __sendPlayersCards(self, nick):
         text = "Your cards: "

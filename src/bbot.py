@@ -16,15 +16,15 @@ class BBot:
 
     def __init__(self):
         self.buffer = ""
-        self.HOST="irc.se.quakenet.org"
-        self.PORT=6667
-        self.NICK="TALKSHOWHOST"
-        self.IDENT="b-boten"
-        self.REALNAME="b botson"
-        self.OWNER="grul"
-        self.CHANNEL="#b-game"
+        self.HOST = "irc.se.quakenet.org"
+        self.PORT = 6667
+        self.NICK = "TALKSHOWHOST"
+        self.IDENT = "b-boten"
+        self.REALNAME ="b botson"
+        self.OWNER = "grul" # lol, ägd robot
+        self.CHANNEL = "#b-game"
 
-        self.s=socket.socket()
+        self.s = socket.socket()
         print "Connecting..."
         self.s.connect((self.HOST, self.PORT))
         print "Sending NICK..."
@@ -63,7 +63,7 @@ class BBot:
         self.s.send("PRIVMSG %s :%s\r\n" % (nick, msg))
 
     def sendChanMsg(self, msg):
-        self.s.send("PRIVMSG %s :%s\r\n" %(self.CHANNEL, msg))
+        self.s.send("PRIVMSG %s :%s\r\n" % (self.CHANNEL, msg))
 
 if __name__ == "__main__":
     b = BBot()
