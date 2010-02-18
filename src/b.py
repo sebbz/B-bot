@@ -67,7 +67,7 @@ class B(object):
         for p in self.players:
             if p.name == player:
                 p.removeCard(card)
-        self.deck.append(card)
+        self.deck.insert(0,card)
 
     def drawFromPlayer(self, nasty_player, victim_player):
         for p in self.players:

@@ -95,6 +95,8 @@ class GameMaster:
             return "IT IS NOT YOUR TURN %s STOOPOD!?" % nick
 
     def dropCard(self, nick, msg): #TODO massor :-D
+        if self.current_player != nick:
+            return "%s, NOT YOUR TURN" % nick
         error_msg = "Failure! Example b.drop B"
         if len(msg) != 6:
             self.bbot.sendPrivMsg(nick, error_msg)
@@ -113,6 +115,9 @@ class GameMaster:
             if not card in cards:
                 self.bbot.sendPrivMsg(nick, "You don't have that card")
                 return ""
+            self.b.putPlayerCardBackInDeck(nick, card)
+            self.__sendPlayersCards(nick)
+            return "%s dropped a card" % nick
 
     def done(self, nick): #TODO if self.drawn nånting och kort i leken
         if not self.playing:
