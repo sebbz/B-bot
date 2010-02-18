@@ -14,6 +14,7 @@ class B(object):
         self.players = []
         self.deck = range(2,15)
         self.start_player = start_player
+        self.current_player_index = 0
     
     def addPlayer(self, player_name):
         if len(self.players) > 3:
@@ -99,7 +100,14 @@ class B(object):
         return None
     
     def getRandomPlayer(self):
-        return str(random.choice(self.players))
+        self.current_player_index = random.randrange(len(self.players))
+        return str(self.players[self.current_player_index])
+
+    def getNextPlayer(self):
+        self.current_player_index += 1
+        if self.current_player_index >= len(self.players):
+            self.current_player_index = 0
+        return str(self.players[self.current_player_index])
     
 class Player():
     """

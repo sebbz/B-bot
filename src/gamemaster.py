@@ -57,21 +57,27 @@ class GameMaster:
             self.__sendPlayersCards(player)
         self.current_player = self.b.getRandomPlayer()
         return "Game started! %s's turn" % self.current_player
-    
+
     def draw(self, nick):
         if not self.playing:
             return "No game started, CANNOT dRAW YOU DUMBFUCK %s" % nick
         if self.current_player == nick:
             if self.b.drawFromDeck(nick):
                 self.__sendPlayersCards(nick)
-                return "%s drew a card, turn around." % nick
+                self.current_player = self.b.getNextPlayer() # TESTING PURPOSES MAN SKA GÖRA ANDRA SKAER LOL
+                return "%s drew a card, %s's turn" % (nick, self.current_player)
             return "ERON"
         else:
             return "IT IS NOT YOUR TURN %s STOOPOD!?" % nick
-            
+
     def __sendPlayersCards(self, nick):
         text = "Your cards: "
         for card in self.b.getPlayerCards(nick):
             text += str(card)
             text += " "
-        self.bbot.sendPrivMsg(nick, text)
+        self.bbot.sendPrivMsg(nick, self.__replaceSuitCards(text))
+
+    def __replaceSuitCards(self, cards):
+        """ cards is a string with cards 2-14 whatever
+        """
+        return cards.replace("11", "B").replace("12", "Q").replace("13", "K").replace("14", "A")
