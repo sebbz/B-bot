@@ -9,10 +9,11 @@ class GameMaster:
         self.has_game = False
         self.bbot = bbot
         self.current_player = ""
-        self.drawn = False
-        self. drawCounter = 0
+        self.draw_counter = 0
 
     def handleMessage(self, nick, msg):
+        """ TODO: b.steal, b.place, mer?
+        """
         msg = msg.strip()
         if msg == "new game":
             return self.newGame(nick)
@@ -75,18 +76,19 @@ class GameMaster:
         self.current_player = self.b.getRandomPlayer()
         return "Game started! %s's turn" % self.current_player
 
-    def draw(self, nick): #TODO self.drawn = True och säkert mer saker
+    def draw(self, nick):
         if not self.playing:
             return "No game started, CANNOT dRAW YOU DUMBFUCK %s" % nick
         if self.current_player == nick:
-            #Man får bara ta ett kort om:
-            #två kort på handen, i början av rundan
-            #eller
-            #under två kort på handen, resten av rundan
-            if self.drawCounter == 0 and len(self.b.getPlayerCards(nick)) == 2 or self.drawCounter >0 and len(self.b.getPlayerCards(nick)) < 2:
+            """Man får bara ta ett kort om:
+            två kort på handen, i början av rundan
+            eller
+            under två kort på handen, resten av rundan
+            """
+            if (self.draw_counter == 0 and len(self.b.getPlayerCards(nick)) == 2) or (self.draw_counter >0 and len(self.b.getPlayerCards(nick)) < 2):
                 if self.b.drawFromDeck(nick):
                     self.__sendPlayersCards(nick)
-                    self.drawCounter += 1
+                    self.draw_counter += 1
                     return "%s drew a card, do something else or b.done" % (nick)
                 return "ERON"
             else:
@@ -94,7 +96,7 @@ class GameMaster:
         else:
             return "IT IS NOT YOUR TURN %s STOOPOD!?" % nick
 
-    def dropCard(self, nick, msg): #TODO massor :-D
+    def dropCard(self, nick, msg):
         if self.current_player != nick:
             return "%s, NOT YOUR TURN" % nick
         error_msg = "Failure! Example b.drop B"
@@ -119,12 +121,19 @@ class GameMaster:
             self.__sendPlayersCards(nick)
             return "%s dropped a card" % nick
 
-    def done(self, nick): #TODO if self.drawn nånting och kort i leken
+    def done(self, nick):
+        """ man måste ha dratt eller slut på kort i leken för att få göra done
+            och så får man inte ha fler än 2 kort på hand
+            och inte färre än 2 om det finns kort att SNO. f.eks. från andra spelare
+            eller från leken.
+        """
         if not self.playing:
             return "No game started, CANNOT LOL YOU DUMBFUCK %s" % nick
+        if self.draw_counter == 0: # lite or och sånt på det där i kommentaren ovanför
+            return "%s: You have to draw a card first" % nick
         if self.current_player == nick:
             self.current_player = self.b.getNextPlayer()
-            self.drawCounter = 0
+            self.draw_counter = 0
             return "%s done, %s's turn" % (nick, self.current_player)
         else:
             return "not %s turn"  % nick
