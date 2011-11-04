@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>447</width>
+    <height>439</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>B-game</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hej och välkommen till B!</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="firstCard">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>100</y>
+      <width>161</width>
+      <height>241</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="secondCard">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>100</y>
+      <width>161</width>
+      <height>241</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>447</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuHej_och_v_lkommen_till_B">
+    <property name="title">
+     <string>Arkiv</string>
+    </property>
+    <addaction name="actionAvsluta"/>
+   </widget>
+   <addaction name="menuHej_och_v_lkommen_till_B"/>
+  </widget>
+  <action name="actionAvsluta">
+   <property name="text">
+    <string>Avsluta</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
