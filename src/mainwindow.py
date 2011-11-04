@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Fri Nov  4 19:51:00 2011
+# Created: Fri Nov  4 20:58:59 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,6 +29,9 @@ class Ui_MainWindow(object):
         self.secondCard = QtGui.QGraphicsView(self.centralwidget)
         self.secondCard.setGeometry(QtCore.QRect(200, 100, 161, 241))
         self.secondCard.setObjectName(_fromUtf8("secondCard"))
+        self.pushButton = QtGui.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(290, 40, 93, 27))
+        self.pushButton.setObjectName(_fromUtf8("pushButton"))
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -50,6 +53,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "B-game", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("MainWindow", "Hej och välkommen till B!", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButton.setText(QtGui.QApplication.translate("MainWindow", "PushButton", None, QtGui.QApplication.UnicodeUTF8))
         self.menuHej_och_v_lkommen_till_B.setTitle(QtGui.QApplication.translate("MainWindow", "Arkiv", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAvsluta.setText(QtGui.QApplication.translate("MainWindow", "Avsluta", None, QtGui.QApplication.UnicodeUTF8))
 
