@@ -1,5 +1,7 @@
 #!/usr/bin/python
 from PyQt4 import QtGui, QtCore
+
+#OMG LOL
 from mainwindow import Ui_MainWindow
 import sys
 
