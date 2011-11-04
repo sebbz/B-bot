@@ -18,6 +18,8 @@ public class Main {
         // TODO code application logic here
         MainWindow a = new MainWindow();
         a.setVisible(true);
+        IrcConnection k = new IrcConnection();
+        k.connect();
     }
 
 }
