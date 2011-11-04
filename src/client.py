@@ -12,7 +12,7 @@ class ClientWindow(QtGui.QMainWindow):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.ui.pushButton.setPixmap(QtGui.QPixmap(self.Image))
+        #self.ui.pushButton.setPixmap(QtGui.QPixmap(self.Image))
         QtCore.QObject.connect(self.ui.firstCard, QtCore.SIGNAL("clicked()"), self.fix)
 
     def fix(self):
