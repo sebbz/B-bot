@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Fri Nov  4 21:30:06 2011
+# Created: Fri Nov  4 21:55:54 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -50,6 +50,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHej_och_v_lkommen_till_B.menuAction())
 
         self.retranslateUi(MainWindow)
+        QtCore.QObject.connect(self.actionAvsluta, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
