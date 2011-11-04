@@ -1,8 +1,7 @@
 #!/usr/bin/python
+from PyQt4 import QtGui, QtCore
 
 #OMG LOL
-
-from PyQt4 import QtGui
 from mainwindow import Ui_MainWindow
 import sys
 
@@ -16,6 +15,7 @@ def run():
 	a = QtGui.QApplication(sys.argv)
 		
 	w = ClientWindow()
+	QtCore.QObject.connect(w.ui.pushButton,QtCore.SIGNAL("clicked()"), w.ui.lable.setText('SuperAwesome'))
 	w.show()
 	
 	sys.exit(a.exec_())
