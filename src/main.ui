@@ -27,26 +27,6 @@
      <string>Hej och välkommen till B!</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="firstCard">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>100</y>
-      <width>161</width>
-      <height>241</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QGraphicsView" name="secondCard">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>100</y>
-      <width>161</width>
-      <height>241</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
@@ -58,6 +38,38 @@
     </property>
     <property name="text">
      <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="firstCard">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>90</y>
+      <width>141</width>
+      <height>261</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>FÖSSTA KOTTET</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="firstCard_2">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>90</y>
+      <width>141</width>
+      <height>261</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="text">
+     <string>ANDRA KOTTET</string>
     </property>
    </widget>
   </widget>
